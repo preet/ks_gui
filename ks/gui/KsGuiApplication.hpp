@@ -98,9 +98,13 @@ namespace ks
 
 
         private:
+            void onInit();
+            void onPause();
+            void onResume();
+            void onLowMemory();
+            void onGraphicsReset();
             void onCloseWindow(Id win_id);
             void onLastWindowClosed();
-
 
             bool m_quitting;
 

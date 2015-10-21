@@ -40,6 +40,7 @@ namespace ks
             if(g_platform) {
                 // TODO Only one instance of Application and Platform
                 // should ever exist; throw an error here
+                throw PlatformInitFailed("SDL: Platform instance already exists");
             }
 
             g_platform = CreatePlatform(GetEventLoop());
@@ -47,9 +48,30 @@ namespace ks
             // Setup connections
 
             // Platform ---> Application
+            g_platform->signal_pause.Connect(
+                        this_app,
+                        &Application::onPause,
+                        ks::ConnectionType::Direct);
+
+            g_platform->signal_resume.Connect(
+                        this_app,
+                        &Application::onResume,
+                        ks::ConnectionType::Direct);
+
             g_platform->signal_quit.Connect(
                         this_app,
-                        &Application::Quit);
+                        &Application::Quit,
+                        ks::ConnectionType::Direct);
+
+            g_platform->signal_low_memory.Connect(
+                        this_app,
+                        &Application::onLowMemory,
+                        ks::ConnectionType::Direct);
+
+            g_platform->signal_graphics_reset.Connect(
+                        this_app,
+                        &Application::onGraphicsReset,
+                        ks::ConnectionType::Direct);
 
             this_app->signal_last_window_closed.Connect(
                         this_app,
@@ -199,11 +221,13 @@ namespace ks
 
             this_app->signal_pause.Connect(
                         window,
-                        &Window::onAppPause);
+                        &Window::onAppPause,
+                        ks::ConnectionType::Blocking);
 
             this_app->signal_resume.Connect(
                         window,
-                        &Window::onAppResume);
+                        &Window::onAppResume,
+                        ks::ConnectionType::Blocking);
 
             this_app->signal_quit.Connect(
                         window,
@@ -230,6 +254,30 @@ namespace ks
                 signal_quit.Emit();
                 g_platform->Quit();
             }
+        }
+
+        void Application::onPause()
+        {
+            LOG.Trace() << "Application::onPause";
+            signal_pause.Emit();
+        }
+
+        void Application::onResume()
+        {
+            LOG.Trace() << "Application::onResume";
+            signal_resume.Emit();
+        }
+
+        void Application::onLowMemory()
+        {
+            LOG.Trace() << "Application::onLowMemory";
+            signal_low_memory.Emit();
+        }
+
+        void Application::onGraphicsReset()
+        {
+            LOG.Trace() << "Application::onGraphicsReset";
+            signal_graphics_reset.Emit();
         }
 
         void Application::onCloseWindow(Id win_id)

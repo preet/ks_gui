@@ -196,7 +196,7 @@ namespace ks
 
         void Window::onAppGraphicsReset()
         {
-            // TODO
+            // Nothing needs to be done
         }
 
         void Window::onWindowReady()
