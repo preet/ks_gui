@@ -23,31 +23,50 @@ namespace ks
 {
     namespace gui
     {
+        // ============================================================= //
+
+        class InvalidScreenRotation : public ks::Exception
+        {
+        public:
+            InvalidScreenRotation(std::string msg);
+            ~InvalidScreenRotation() = default;
+        };
+
+        // ============================================================= //
+
         class Screen final
         {
         public:
-            enum class Rotation {
-                CW_0,
-                CW_90,
-                CW_180,
-                CW_270
+            using Size = std::pair<uint,uint>;
+
+            enum class Rotation
+            {
+                CW_0=0,
+                CW_90=90,
+                CW_180=180,
+                CW_270=270
             };
 
             Screen(std::string name,
                    Rotation rotation,
-                   std::pair<uint,uint> size_px,
-                   std::pair<uint,uint> size_mm,
-                   float dpi);
+                   uint width_px,
+                   uint height_px,
+                   float xdpi,
+                   float ydpi);
 
             ~Screen() = default;
+
+            static Rotation ConvertRotation(uint rotation_degs);
 
             // Properties
             Property<std::string> name;
             Property<Rotation> rotation;
-            Property<std::pair<uint,uint>> size_px;
-            Property<std::pair<uint,uint>> size_mm;
-            Property<float> dpi;
+            Property<Size> size_px;
+            Property<float> xdpi;
+            Property<float> ydpi;
         };
+
+        // ============================================================= //
     }
 }
 

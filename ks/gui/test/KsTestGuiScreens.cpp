@@ -37,10 +37,8 @@ int main(int argc, char* argv[])
         LOG.Trace() << "Resolution: "
                     << screen->size_px.Get().first << ","
                     << screen->size_px.Get().second;
-        LOG.Trace() << "Dimensions: "
-                    << screen->size_mm.Get().first << ","
-                    << screen->size_mm.Get().second;
-        LOG.Trace() << "DPI: " << screen->dpi.Get();
+        LOG.Trace() << "X DPI: " << screen->xdpi.Get();
+        LOG.Trace() << "Y DPI: " << screen->ydpi.Get();
     }
 
 

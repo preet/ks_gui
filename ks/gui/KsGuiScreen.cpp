@@ -20,16 +20,44 @@ namespace ks
 {
     namespace gui
     {
+        InvalidScreenRotation::InvalidScreenRotation(std::string msg) :
+            ks::Exception(ks::Exception::ErrorLevel::ERROR,
+                          std::move(msg),true)
+        {}
+
         Screen::Screen(std::string name,
                        Rotation rotation,
-                       std::pair<uint,uint> size_px,
-                       std::pair<uint,uint> size_mm,
-                       float dpi) :
-                    name(name),
-                    rotation(rotation),
-                    size_px(size_px),
-                    size_mm(size_mm),
-                    dpi(dpi)
+                       uint width_px,
+                       uint height_px,
+                       float xdpi,
+                       float ydpi) :
+            name(name),
+            rotation(rotation),
+            size_px(Size(width_px,height_px)),
+            xdpi(xdpi),
+            ydpi(ydpi)
         {}
+
+        Screen::Rotation Screen::ConvertRotation(uint rotation_degs)
+        {
+            if(rotation_degs == 0) {
+                return Rotation::CW_0;
+            }
+            else if(rotation_degs == 90) {
+                return Rotation::CW_90;
+            }
+            else if(rotation_degs == 180) {
+                return Rotation::CW_180;
+            }
+            else if(rotation_degs == 270){
+                return Rotation::CW_270;
+            }
+            else
+            {
+                throw InvalidScreenRotation(
+                            "Invalid Screen Rotation value: "+
+                            ks::to_string(rotation_degs));
+            }
+        }
     }
 }
