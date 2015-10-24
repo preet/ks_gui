@@ -26,15 +26,15 @@ namespace ks
         class Screen final
         {
         public:
-            enum class Orientation {
-                Landscape,
-                Portrait,
-                InvertedLandscape,
-                InvertedPortrait
+            enum class Rotation {
+                CW_0,
+                CW_90,
+                CW_180,
+                CW_270
             };
 
             Screen(std::string name,
-                   Orientation orientation,
+                   Rotation rotation,
                    std::pair<uint,uint> size_px,
                    std::pair<uint,uint> size_mm,
                    float dpi);
@@ -43,7 +43,7 @@ namespace ks
 
             // Properties
             Property<std::string> name;
-            Property<Orientation> orientation;
+            Property<Rotation> rotation;
             Property<std::pair<uint,uint>> size_px;
             Property<std::pair<uint,uint>> size_mm;
             Property<float> dpi;

@@ -32,8 +32,8 @@ int main(int argc, char* argv[])
     auto list_screens = app->GetScreens();
     for(auto& screen : list_screens) {
         LOG.Trace() << "Screen: " << screen->name.Get();
-        LOG.Trace() << "Orientation: "
-                    << static_cast<uint>(screen->orientation.Get());
+        LOG.Trace() << "Rotation: "
+                    << static_cast<uint>(screen->rotation.Get());
         LOG.Trace() << "Resolution: "
                     << screen->size_px.Get().first << ","
                     << screen->size_px.Get().second;

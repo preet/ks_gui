@@ -21,12 +21,12 @@ namespace ks
     namespace gui
     {
         Screen::Screen(std::string name,
-                       Orientation orientation,
+                       Rotation rotation,
                        std::pair<uint,uint> size_px,
                        std::pair<uint,uint> size_mm,
                        float dpi) :
                     name(name),
-                    orientation(orientation),
+                    rotation(rotation),
                     size_px(size_px),
                     size_mm(size_mm),
                     dpi(dpi)
