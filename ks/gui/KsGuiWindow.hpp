@@ -20,7 +20,7 @@
 #include <ks/KsSignal.hpp>
 #include <ks/shared/KsDeferredProperty.hpp>
 #include <ks/shared/KsCallbackTimer.hpp>
-
+#include <ks/gl/KsGLConfig.hpp>
 #include <ks/gui/KsGuiConfig.hpp>
 
 namespace ks
@@ -183,7 +183,7 @@ namespace ks
                 {
                     // adjust defaults based on platform
                     #ifdef KS_ENV_SINGLE_WINDOW
-                        fullscreen = true;
+                        fullscreen = FullscreenMode::Display;
                     #endif
                 }
 
