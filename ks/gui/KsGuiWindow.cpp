@@ -181,6 +181,9 @@ namespace ks
         {
             m_block_rendering = true;
             m_render_timer->Stop();
+
+            // Required on Android/SDL to recreate the EGL surface
+            signal_release_context.Emit();
         }
 
         void Window::onAppResume()
