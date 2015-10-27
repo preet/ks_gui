@@ -108,7 +108,8 @@ namespace ks
 
             // Windows
             virtual shared_ptr<IPlatformWindow>
-            CreateWindow(Window::Attributes& win_attrs,
+            CreateWindow(shared_ptr<EventLoop>& window_evl,
+                         Window::Attributes& win_attrs,
                          Window::Properties& win_props) = 0;
 
             virtual void DestroyWindow(shared_ptr<IPlatformWindow>) = 0;

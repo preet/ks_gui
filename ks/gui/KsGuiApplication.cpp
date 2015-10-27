@@ -97,7 +97,7 @@ namespace ks
         }
 
         shared_ptr<Window>
-        Application::CreateWindow(shared_ptr<EventLoop> event_loop,
+        Application::CreateWindow(shared_ptr<EventLoop> window_evl,
                                   Window::Attributes win_attrs,
                                   Window::Properties win_props)
         {
@@ -107,10 +107,12 @@ namespace ks
 
             // Create the window
             shared_ptr<IPlatformWindow> platform_window =
-                    g_platform->CreateWindow(win_attrs,win_props);
+                    g_platform->CreateWindow(
+                        window_evl,win_attrs,win_props);
 
             shared_ptr<Window> window =
-                    make_object<Window>(event_loop,win_attrs,win_props);
+                    make_object<Window>(
+                        window_evl,win_attrs,win_props);
 
             m_list_windows.emplace_back(
                         PlatformWindowDesc{
@@ -240,8 +242,11 @@ namespace ks
 
 
             // Start rendering
-            window->onWindowReady();
-
+            window_evl->PostTask(
+                        make_shared<Task>(
+                            [window](){
+                                window->onWindowReady();
+                            }));
 
             return window;
         }
