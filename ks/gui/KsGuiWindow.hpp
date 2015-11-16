@@ -89,7 +89,6 @@ namespace ks
             using Size = std::pair<uint,uint>;
             using Position = std::pair<sint,sint>;
 
-
             // ============================================================= //
 
             enum class FullscreenMode
@@ -178,7 +177,6 @@ namespace ks
                     focused(false),
                     visible(true),
                     always_on_top(false),
-                    render_dt_ms(milliseconds(17)),
                     swap_interval(1)
                 {
                     // adjust defaults based on platform
@@ -195,7 +193,6 @@ namespace ks
                 bool focused;
                 bool visible;
                 bool always_on_top;
-                milliseconds render_dt_ms;
                 uint swap_interval;
                 std::string title;
             };
@@ -245,6 +242,11 @@ namespace ks
             //   with an active context)
             void SyncLayer(shared_ptr<Layer> const &layer);
 
+            // * Render a frame. Renders all layers in the order
+            //   they were added to the Window by calling
+            //   Layer::signal_render::Emit() with an active context
+            void Render();
+
             // * Stops rendering and signals the Application
             //   to close the window.
             void Close();
@@ -257,7 +259,6 @@ namespace ks
             DeferredProperty<bool> focused;
             DeferredProperty<bool> visible;
             DeferredProperty<bool> always_on_top;
-            DeferredProperty<milliseconds> render_dt_ms;
             DeferredProperty<uint> swap_interval;
             DeferredProperty<std::string> title;
 
@@ -268,7 +269,6 @@ namespace ks
             Signal<> signal_swap_buffers;
             Signal<Id> signal_app_close_window;
 
-
             // Application ---> Window
             void onAppInit();
             void onAppPause();
@@ -277,17 +277,9 @@ namespace ks
             void onAppGraphicsReset();
             void onWindowReady();
 
-            // Window ---> Window
-            void onRenderDtChanged(milliseconds render_dt_ms);
-
-
-            // RenderTimer ---> Window
-            void onRender();
             void setContextCurrent();
 
-
             Attributes m_attributes;
-            shared_ptr<CallbackTimer> m_render_timer;
             std::map<sint,shared_ptr<Layer>> m_lkup_layer;
             std::atomic<bool> m_closed;
             std::atomic<bool> m_block_rendering;

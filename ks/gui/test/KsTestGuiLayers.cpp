@@ -150,6 +150,7 @@ int main(int argc, char* argv[])
     shared_ptr<gui::Application> app =
             make_object<gui::Application>();
 
+
     // Create window
     gui::Window::Attributes win_attribs;
     gui::Window::Properties win_props;
@@ -160,6 +161,8 @@ int main(int argc, char* argv[])
                 win_attribs,
                 win_props);
 
+
+    // Create Layers
     win_width = window->size.Get().first;
     win_height = window->size.Get().second;
 
@@ -191,6 +194,19 @@ int main(int argc, char* argv[])
     (void)render_layer_red;
     (void)render_layer_green;
     (void)render_layer_blue;
+
+
+    // Start rendering
+    shared_ptr<CallbackTimer> timer =
+            make_object<CallbackTimer>(
+                window->GetEventLoop(),
+                milliseconds(200),
+                [window](){
+                    window->Render();
+                });
+
+    timer->Start();
+
 
     // Run!
     app->Run();

@@ -55,7 +55,6 @@ namespace ks
             focused(p.focused),
             visible(p.visible),
             always_on_top(p.always_on_top),
-            render_dt_ms(p.render_dt_ms),
             swap_interval(p.swap_interval),
             title(p.title),
             m_attributes(attributes),
@@ -66,19 +65,7 @@ namespace ks
         void Window::Init(ks::Object::Key const &,
                           shared_ptr<Window> const &this_win)
         {
-            // Create the render timer
-            m_render_timer =
-                    make_object<CallbackTimer>(
-                        this->GetEventLoop(),
-                        render_dt_ms.Get(),
-                        [this](){ this->onRender(); });
 
-            // Setup connections
-
-            // Window ---> Window
-            render_dt_ms.signal_changed.Connect(
-                        this_win,
-                        &Window::onRenderDtChanged);
         }
 
         Window::~Window()
@@ -157,11 +144,25 @@ namespace ks
             layer->signal_sync.Emit();
         }
 
+        void Window::Render()
+        {
+            if(m_block_rendering) {
+                return;
+            }
+
+            setContextCurrent();
+
+            for(auto& idx_layer : m_lkup_layer) {
+                idx_layer.second->signal_render.Emit();
+            }
+
+            signal_swap_buffers.Emit();
+        }
+
         void Window::Close()
         {
             if(!m_closed) {
                 m_block_rendering = true;
-                m_render_timer->Stop();
 
                 signal_release_context.Emit();
                 signal_app_close_window.Emit(this->GetId());
@@ -174,13 +175,11 @@ namespace ks
         void Window::onAppInit()
         {
             m_block_rendering = false;
-            m_render_timer->Start();
         }
 
         void Window::onAppPause()
         {
             m_block_rendering = true;
-            m_render_timer->Stop();
 
             // Required on Android/SDL to recreate the EGL surface
             signal_release_context.Emit();
@@ -189,7 +188,6 @@ namespace ks
         void Window::onAppResume()
         {
             m_block_rendering = false;
-            m_render_timer->Start();
         }
 
         void Window::onAppQuit()
@@ -205,27 +203,6 @@ namespace ks
         void Window::onWindowReady()
         {
             m_block_rendering = false;
-            m_render_timer->Start();
-        }
-
-        void Window::onRenderDtChanged(milliseconds render_dt_ms)
-        {
-            m_render_timer->SetInterval(render_dt_ms);
-        }
-
-        void Window::onRender()
-        {
-            if(m_block_rendering) {
-                return;
-            }
-
-            setContextCurrent();
-
-            for(auto& idx_layer : m_lkup_layer) {
-                idx_layer.second->signal_render.Emit();
-            }
-
-            signal_swap_buffers.Emit();
         }
 
         void Window::setContextCurrent()
