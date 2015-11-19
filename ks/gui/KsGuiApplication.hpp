@@ -21,15 +21,20 @@
 #include <ks/KsSignal.hpp>
 #include <ks/gui/KsGuiScreen.hpp>
 #include <ks/gui/KsGuiWindow.hpp>
+#include <ks/gui/KsGuiInput.hpp>
 
 namespace ks
 {
 	namespace gui
     {
+        class IPlatform;
         class IPlatformWindow;
 
         class Application : public ks::Object
 		{
+            // This needs to be up here for order of init
+            IPlatform* m_platform;
+
         public:
             using base_type = ks::Object;
 
@@ -74,6 +79,8 @@ namespace ks
             void Quit();
 
 
+            // TODO these signals should be pointers
+
             // Application
             Signal<> signal_init;
             Signal<> signal_pause;
@@ -95,6 +102,12 @@ namespace ks
             //   and all buffers/texture data should be
             //   recreated
             Signal<> signal_graphics_reset;
+
+            // Input
+            Signal<KeyEvent>* const signal_keyboard_input;
+            Signal<std::string>* const signal_utf8_input;
+            Signal<MouseEvent>* const signal_mouse_input;
+            Signal<ScrollEvent>* const signal_scroll_input;
 
 
         private:

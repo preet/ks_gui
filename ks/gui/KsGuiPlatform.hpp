@@ -19,6 +19,7 @@
 
 #include <ks/gui/KsGuiWindow.hpp>
 #include <ks/gui/KsGuiScreen.hpp>
+#include <ks/gui/KsGuiInput.hpp>
 
 namespace ks
 {
@@ -121,6 +122,11 @@ namespace ks
             Signal<> signal_quit;
             Signal<> signal_low_memory;
             Signal<> signal_graphics_reset;
+
+            Signal<KeyEvent> signal_keyboard_input;
+            Signal<std::string> signal_utf8_input;
+            Signal<MouseEvent> signal_mouse_input;
+            Signal<ScrollEvent> signal_scroll_input;
         };
 
         // ============================================================= //

@@ -23,28 +23,50 @@ namespace ks
     {       
         namespace {
             shared_ptr<IPlatform> g_platform;
+
+            IPlatform* SetupPlatform(shared_ptr<EventLoop> const &event_loop)
+            {
+                if(g_platform)
+                {
+                    // Only one instance of Application and Platform should exist
+                    throw PlatformInitFailed(
+                                "SDL: Platform instance already exists");
+                }
+
+                // Start the event loop immediately so we can
+                // handle events and tasks before calling Run
+                event_loop->Start();
+                g_platform = CreatePlatform(event_loop);
+
+                return g_platform.get();
+            }
         }
 
         Application::Application(ks::Object::Key const &key) :
             ks::Object(key,make_shared<EventLoop>()),
+
+            m_platform(SetupPlatform(GetEventLoop())),
+
+            signal_keyboard_input(
+                &(m_platform->signal_keyboard_input)),
+
+            signal_utf8_input(
+                &(m_platform->signal_utf8_input)),
+
+            signal_mouse_input(
+                &(m_platform->signal_mouse_input)),
+
+            signal_scroll_input(
+                &(m_platform->signal_scroll_input)),
+
             m_quitting(false)
         {
-            // Start the event loop immediately so we can
-            // handle events and tasks before calling Run
-            this->GetEventLoop()->Start();
+
         }
 
         void Application::Init(ks::Object::Key const &,
                                shared_ptr<Application> const &this_app)
         {
-            if(g_platform) {
-                // TODO Only one instance of Application and Platform
-                // should ever exist; throw an error here
-                throw PlatformInitFailed("SDL: Platform instance already exists");
-            }
-
-            g_platform = CreatePlatform(GetEventLoop());
-
             // Setup connections
 
             // Platform ---> Application

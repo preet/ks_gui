@@ -9,7 +9,8 @@ HEADERS += \
     $${PATH_KS_GUI}/KsGuiPlatform.hpp \
     $${PATH_KS_GUI}/KsGuiApplication.hpp \
     $${PATH_KS_GUI}/KsGuiScreen.hpp \
-    $${PATH_KS_GUI}/KsGuiWindow.hpp
+    $${PATH_KS_GUI}/KsGuiWindow.hpp \
+    $${PATH_KS_GUI}/KsGuiInput.hpp
 
 SOURCES += \
     $${PATH_KS_GUI}/KsGuiPlatform.cpp \
