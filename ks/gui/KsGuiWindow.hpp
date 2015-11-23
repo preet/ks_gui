@@ -29,45 +29,11 @@ namespace ks
     {
         // ============================================================= //
 
-        class Layer
-        {
-            friend class Window;
-
-        private:
-            // Restrict creation to from within Window
-            Layer(sint index);
-
-        public:
-            ~Layer() = default;
-
-            Layer(Layer const &) = delete;
-            Layer(Layer &&) = delete;
-            Layer& operator = (Layer const &) = delete;
-            Layer& operator = (Layer&&) = delete;
-
-            sint const index;
-
-            // It is expected that a direct connection is used
-            // when connecting to these signals
-            Signal<> signal_sync;
-            Signal<> signal_render;
-            Signal<> signal_reset; // graphics context reset
-        };
-
-        // ============================================================= //
-
         class WindowContextThreadInvalid : public ks::Exception
         {
         public:
             WindowContextThreadInvalid(std::string msg);
             ~WindowContextThreadInvalid() = default;
-        };
-
-        class WindowLayerIndexInvalid : public ks::Exception
-        {
-        public:
-            WindowLayerIndexInvalid(std::string msg);
-            ~WindowLayerIndexInvalid() = default;
         };
 
         class WindowEventLoopInactive : public ks::Exception
@@ -230,22 +196,15 @@ namespace ks
 
             // All interaction with this class must be done
             // from within the same thread as its event loop.
-
             Attributes const & GetAttributes() const;
 
-            // * Create a layer for the given index
-            // * Layers are rendered in order of their indices
-            // * Throws: WindowLayerIndexInvalid
-            shared_ptr<Layer> CreateLayer(sint index);
+            // * Invokes @callback with an active graphics
+            //   device context
+            // * Returns without doing anything if the window
+            //   is inactive (ie. the application is paused)
+            void InvokeWithContext(std::function<void()> callback);
 
-            // * Sync a layer (calls Layer::signal_sync::Emit()
-            //   with an active context)
-            void SyncLayer(shared_ptr<Layer> const &layer);
-
-            // * Render a frame. Renders all layers in the order
-            //   they were added to the Window by calling
-            //   Layer::signal_render::Emit() with an active context
-            void Render();
+            void SwapBuffers();
 
             // * Stops rendering and signals the Application
             //   to close the window.
@@ -280,7 +239,6 @@ namespace ks
             void setContextCurrent();
 
             Attributes m_attributes;
-            std::map<sint,shared_ptr<Layer>> m_lkup_layer;
             std::atomic<bool> m_closed;
             std::atomic<bool> m_block_rendering;
         };

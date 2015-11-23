@@ -24,18 +24,8 @@ namespace ks
     {
         // ============================================================= //
 
-        Layer::Layer(sint index) :
-            index(index)
-        {}
-
-        // ============================================================= //
-
         WindowContextThreadInvalid::WindowContextThreadInvalid(std::string msg) :
             ks::Exception(ks::Exception::ErrorLevel::FATAL,std::move(msg),true)
-        {}
-
-        WindowLayerIndexInvalid::WindowLayerIndexInvalid(std::string msg) :
-            ks::Exception(ks::Exception::ErrorLevel::WARN,std::move(msg),true)
         {}
 
         WindowEventLoopInactive::WindowEventLoopInactive(std::string msg) :
@@ -119,43 +109,28 @@ namespace ks
             }
         }
 
-        shared_ptr<Layer> Window::CreateLayer(sint index)
+        void Window::InvokeWithContext(std::function<void()> callback)
         {
-            auto it = m_lkup_layer.find(index);
-
-            if(it == m_lkup_layer.end()) {
-                shared_ptr<Layer> layer(new Layer(index));
-                it = m_lkup_layer.emplace(index,layer).first;
-
-                return layer;
+            if(m_block_rendering)
+            {
+                return;
             }
 
-            throw WindowLayerIndexInvalid(
-                        "Window: Layer index already exists");
+            if(callback)
+            {
+                setContextCurrent();
+                callback();
+            }
         }
 
-        void Window::SyncLayer(shared_ptr<Layer> const &layer)
+        void Window::SwapBuffers()
         {
-            if(m_block_rendering) {
+            if(m_block_rendering)
+            {
                 return;
             }
 
             setContextCurrent();
-            layer->signal_sync.Emit();
-        }
-
-        void Window::Render()
-        {
-            if(m_block_rendering) {
-                return;
-            }
-
-            setContextCurrent();
-
-            for(auto& idx_layer : m_lkup_layer) {
-                idx_layer.second->signal_render.Emit();
-            }
-
             signal_swap_buffers.Emit();
         }
 
