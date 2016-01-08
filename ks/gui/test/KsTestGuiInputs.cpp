@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
     shared_ptr<CallbackTimer> win_timer =
             make_object<CallbackTimer>(
                 app->GetEventLoop(),
-                milliseconds(16),
+                Milliseconds(16),
                 [win_layer](){
                     signal_render_win.Emit();
                 });

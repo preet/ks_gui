@@ -56,7 +56,7 @@ namespace ks
             {
                 throw InvalidScreenRotation(
                             "Invalid Screen Rotation value: "+
-                            ks::to_string(rotation_degs));
+                            ks::ToString(rotation_degs));
             }
         }
     }

@@ -53,7 +53,7 @@ namespace ks
         {}
 
         void Window::Init(ks::Object::Key const &,
-                          shared_ptr<Window> const &this_win)
+                          shared_ptr<Window> const &)
         {
 
         }

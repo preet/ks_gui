@@ -200,7 +200,7 @@ int main(int argc, char* argv[])
     shared_ptr<CallbackTimer> timer =
             make_object<CallbackTimer>(
                 window->GetEventLoop(),
-                milliseconds(200),
+                Milliseconds(200),
                 [window](){
                     window->Render();
                 });
