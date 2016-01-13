@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2015 Preet Desai (preet.desai@gmail.com)
+   Copyright (C) 2015-2016 Preet Desai (preet.desai@gmail.com)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -59,6 +59,9 @@ namespace ks
             signal_scroll_input(
                 &(m_platform->signal_scroll_input)),
 
+            signal_processed_events(
+                &(m_platform->signal_processed_events)),
+
             m_quitting(false)
         {
 
@@ -102,6 +105,11 @@ namespace ks
 
         Application::~Application()
         {}
+
+        void Application::ProcessEvents()
+        {
+            g_platform->ProcessEvents();
+        }
 
         void Application::Run()
         {

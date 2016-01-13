@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2015 Preet Desai (preet.desai@gmail.com)
+   Copyright (C) 2015-2016 Preet Desai (preet.desai@gmail.com)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -48,6 +48,10 @@ namespace ks
             // Unless otherwise mentioned, none of these functions
             // are thread safe and should be called from the main thread
 
+            // * Processes any waiting events
+            // * This needs to be invoked manually
+            void ProcessEvents();
+
             // * Starts the application event loop, blocking the
             //   calling thread
             void Run();
@@ -78,8 +82,7 @@ namespace ks
             //   stop the main EventLoop and cause Run() to return
             void Quit();
 
-
-            // TODO these signals should be pointers
+            // Signals
 
             // Application
             Signal<> signal_init;
@@ -87,6 +90,11 @@ namespace ks
             Signal<> signal_resume;
             Signal<> signal_quit;
             Signal<> signal_low_memory;
+
+            // * emitted when the OpenGL context is lost
+            //   and all buffers/texture data should be
+            //   recreated
+            Signal<> signal_graphics_reset;
 
             // Display Screens
             // * emitted when screens have been added or removed
@@ -98,16 +106,16 @@ namespace ks
             //   shortly after this signal is sent
             Signal<> signal_last_window_closed;
 
-            // * emitted when the OpenGL context is lost
-            //   and all buffers/texture data should be
-            //   recreated
-            Signal<> signal_graphics_reset;
-
             // Input
             Signal<KeyEvent>* const signal_keyboard_input;
             Signal<std::string>* const signal_utf8_input;
             Signal<MouseEvent>* const signal_mouse_input;
             Signal<ScrollEvent>* const signal_scroll_input;
+
+            // * emitted after events are processed (ie after
+            //   the ProcessEvents call is completed)
+            // bool - True if any new events were processed
+            Signal<bool>* const signal_processed_events;
 
 
         private:

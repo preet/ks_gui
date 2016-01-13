@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2015 Preet Desai (preet.desai@gmail.com)
+   Copyright (C) 2015-2016 Preet Desai (preet.desai@gmail.com)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ namespace ks
             IPlatform() = default;
             virtual ~IPlatform() = default;
 
-            //
+            virtual void ProcessEvents() = 0;
             virtual void Run() = 0;
             virtual void Quit() = 0;
 
@@ -122,6 +122,7 @@ namespace ks
             Signal<> signal_quit;
             Signal<> signal_low_memory;
             Signal<> signal_graphics_reset;
+            Signal<bool> signal_processed_events;
 
             Signal<KeyEvent> signal_keyboard_input;
             Signal<std::string> signal_utf8_input;
