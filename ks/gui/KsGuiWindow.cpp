@@ -123,6 +123,17 @@ namespace ks
             }
         }
 
+        bool Window::SetContextCurrent()
+        {
+            if(m_block_rendering)
+            {
+                return false;
+            }
+
+            setContextCurrent();
+            return true;
+        }
+
         void Window::SwapBuffers()
         {
             if(m_block_rendering)

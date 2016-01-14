@@ -204,6 +204,7 @@ namespace ks
             //   is inactive (ie. the application is paused)
             void InvokeWithContext(std::function<void()> callback);
 
+            bool SetContextCurrent();
             void SwapBuffers();
 
             // * Stops rendering and signals the Application
