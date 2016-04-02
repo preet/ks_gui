@@ -44,6 +44,7 @@ namespace ks
             Action action;
             float x;
             float y;
+            TimePoint timestamp;
         };
 
         struct ScrollEvent
