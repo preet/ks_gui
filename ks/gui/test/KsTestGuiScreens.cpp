@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
     // Create application
     shared_ptr<gui::Application> app =
-            make_object<gui::Application>();
+            MakeObject<gui::Application>();
 
     // Dump screen information
     auto list_screens = app->GetScreens();

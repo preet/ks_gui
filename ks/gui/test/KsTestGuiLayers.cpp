@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
 
     // Create application
     shared_ptr<gui::Application> app =
-            make_object<gui::Application>();
+            MakeObject<gui::Application>();
 
 
     // Create window
@@ -173,21 +173,21 @@ int main(int argc, char* argv[])
     // first layer
     auto layer_red = window->CreateLayer(0);
     auto render_layer_red =
-            make_object<RedLayer>(
+            MakeObject<RedLayer>(
                 app->GetEventLoop(),
                 layer_red);
 
     // second layer
     auto layer_green = window->CreateLayer(1);
     auto render_layer_green =
-            make_object<GreenLayer>(
+            MakeObject<GreenLayer>(
                 app->GetEventLoop(),
                 layer_green);
 
     // third layer
     auto layer_blue = window->CreateLayer(2);
     auto render_layer_blue =
-            make_object<BlueLayer>(
+            MakeObject<BlueLayer>(
                 app->GetEventLoop(),
                 layer_blue);
 
@@ -198,7 +198,7 @@ int main(int argc, char* argv[])
 
     // Start rendering
     shared_ptr<CallbackTimer> timer =
-            make_object<CallbackTimer>(
+            MakeObject<CallbackTimer>(
                 window->GetEventLoop(),
                 Milliseconds(200),
                 [window](){

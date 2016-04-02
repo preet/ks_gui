@@ -176,7 +176,7 @@ int main(int argc, char* argv[])
     (void)argv;
 
     // Create application
-    auto app = make_object<gui::Application>();
+    auto app = MakeObject<gui::Application>();
 
     // Create windows
     gui::Window::Attributes win_attribs;
@@ -199,7 +199,7 @@ int main(int argc, char* argv[])
 
     // Create scene
     auto scene =
-            make_object<Scene>(
+            MakeObject<Scene>(
                 app->GetEventLoop(),
                 win0.get(),
                 win1.get());

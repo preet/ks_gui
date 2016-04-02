@@ -141,14 +141,14 @@ namespace ks
                         window_evl,win_attrs,win_props);
 
             shared_ptr<Window> window =
-                    make_object<Window>(
+                    MakeObject<Window>(
                         window_evl,win_attrs,win_props);
 
             m_list_windows.emplace_back(
                         PlatformWindowDesc{
                             window->GetId(),
                             platform_window,
-                            make_object<ks::ConnectionContext>(
+                            MakeObject<ks::ConnectionContext>(
                                 this_app->GetEventLoop())
                         });
 

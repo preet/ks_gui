@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 
     // Create application
     shared_ptr<gui::Application> app =
-            make_object<gui::Application>();
+            MakeObject<gui::Application>();
 
     gui::Window::Attributes win_attribs;
     gui::Window::Properties win_props;
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
                 ConnectionType::Queued);
 
     shared_ptr<CallbackTimer> win_timer =
-            make_object<CallbackTimer>(
+            MakeObject<CallbackTimer>(
                 app->GetEventLoop(),
                 Milliseconds(16),
                 [win_layer](){
