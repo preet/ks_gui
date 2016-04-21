@@ -56,6 +56,9 @@ namespace ks
             signal_mouse_input(
                 &(m_platform->signal_mouse_input)),
 
+            signal_touch_input(
+                &(m_platform->signal_touch_input)),
+
             signal_scroll_input(
                 &(m_platform->signal_scroll_input)),
 

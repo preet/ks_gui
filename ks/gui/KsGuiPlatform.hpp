@@ -127,6 +127,7 @@ namespace ks
             Signal<KeyEvent> signal_keyboard_input;
             Signal<std::string> signal_utf8_input;
             Signal<MouseEvent> signal_mouse_input;
+            Signal<TouchEvent> signal_touch_input;
             Signal<ScrollEvent> signal_scroll_input;
         };
 

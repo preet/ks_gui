@@ -110,6 +110,7 @@ namespace ks
             Signal<KeyEvent>* const signal_keyboard_input;
             Signal<std::string>* const signal_utf8_input;
             Signal<MouseEvent>* const signal_mouse_input;
+            Signal<TouchEvent>* const signal_touch_input;
             Signal<ScrollEvent>* const signal_scroll_input;
 
             // * emitted after events are processed (ie after

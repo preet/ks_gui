@@ -47,6 +47,22 @@ namespace ks
             TimePoint timestamp;
         };
 
+        struct TouchEvent
+        {
+            enum class Action : u8
+            {
+                None,
+                Press,
+                Release
+            };
+
+            Action action;
+            u8 index; // touch finger index
+            float x;
+            float y;
+            TimePoint timestamp;
+        };
+
         struct ScrollEvent
         {
             float x;
